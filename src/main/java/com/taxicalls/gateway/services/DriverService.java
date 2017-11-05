@@ -20,4 +20,7 @@ public interface DriverService {
     @RequestMapping(method = RequestMethod.POST, value = "/trips")
     public Response acceptTrip(Trip trip);
 
+    @RequestMapping(method = RequestMethod.POST, value = "/drivers")
+    public Response createDriver(Driver driver);
+
 }

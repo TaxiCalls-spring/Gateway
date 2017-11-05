@@ -6,6 +6,7 @@ import com.taxicalls.gateway.services.NotificationService;
 import com.taxicalls.gateway.services.PassengerService;
 import com.taxicalls.gateway.services.TripService;
 import com.taxicalls.protocol.Response;
+import com.taxicalls.protocol.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,13 +23,17 @@ public class PassengersResource {
 
     @Autowired
     private NotificationService notificationService;
-    
+
     @Autowired
     private TripService tripService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/authenticate")
     public Response authenticatePassenger(@RequestBody Passenger passenger) {
-        return passengerService.authenticatePassenger(passenger);
+        Response response = passengerService.authenticatePassenger(passenger);
+        if (response.getStatus().equals(Status.NOT_FOUND)) {
+            return passengerService.createPassenger(passenger);
+        }
+        return response;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/trips/drivers/available")
@@ -43,7 +48,7 @@ public class PassengersResource {
     public Response chooseDriver(@RequestBody ChooseDriverRequest chooseDriverRequest) {
         return passengerService.chooseDriver(chooseDriverRequest);
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, value = "/notifications/check")
     public Response checkNotifications(@RequestBody Passenger passenger) {
         CheckNotificationsRequest checkNotificationsRequest = new CheckNotificationsRequest();

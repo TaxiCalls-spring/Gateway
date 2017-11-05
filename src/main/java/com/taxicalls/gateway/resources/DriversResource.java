@@ -6,6 +6,7 @@ import com.taxicalls.gateway.services.DriverService;
 import com.taxicalls.gateway.services.NotificationService;
 import com.taxicalls.gateway.services.TripService;
 import com.taxicalls.protocol.Response;
+import com.taxicalls.protocol.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,26 +20,37 @@ public class DriversResource {
 
     @Autowired
     private DriverService driverService;
-    
+
     @Autowired
     private TripService tripService;
-    
+
     @Autowired
     private NotificationService notificationService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/authenticate")
     public Response authenticateDriver(@RequestBody Driver driver) {
-        return driverService.authenticateDriver(driver);
+        Response response = driverService.authenticateDriver(driver);
+        if (response.getStatus().equals(Status.NOT_FOUND)) {
+            return driverService.createDriver(driver);
+        }
+        return response;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/trips")
+    @RequestMapping(method = RequestMethod.POST, value = "/trips/accept")
     public Response acceptTrip(@RequestBody Trip trip) {
         return driverService.acceptTrip(trip);
     }
+
+      @RequestMapping(method = RequestMethod.POST, value = "/trips/update")
+    public Response updateTrip(@RequestBody Trip trip) {
+        return tripService.updateTrip(trip);
+    }
+    
     @RequestMapping(method = RequestMethod.POST, value = "/update")
     public Response updateDriver(@RequestBody Driver driver) {
         return tripService.updateDriver(driver);
     }
+
     @RequestMapping(method = RequestMethod.POST, value = "/notifications/check")
     public Response checkNotifications(@RequestBody Driver driver) {
         CheckNotificationsRequest checkNotificationsRequest = new CheckNotificationsRequest();

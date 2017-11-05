@@ -1,6 +1,7 @@
 package com.taxicalls.gateway.services;
 
 import com.taxicalls.gateway.model.Driver;
+import com.taxicalls.gateway.model.Trip;
 import com.taxicalls.gateway.resources.AvailableDriversRequest;
 import com.taxicalls.protocol.Response;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -19,4 +20,8 @@ public interface TripService {
 
     @RequestMapping(method = RequestMethod.POST, value = "/drivers/update")
     public Response updateDriver(Driver driver);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/trips/update")
+    public Response updateTrip(Trip trip);
+
 }

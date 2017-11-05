@@ -23,4 +23,7 @@ public interface PassengerService {
     @RequestMapping(method = RequestMethod.POST, value = "/trips/drivers/choose")
     public Response chooseDriver(ChooseDriverRequest chooseDriverRequest);
 
+    @RequestMapping(method = RequestMethod.POST, value = "/passengers")
+    public Response createPassenger(Passenger passenger);
+
 }
