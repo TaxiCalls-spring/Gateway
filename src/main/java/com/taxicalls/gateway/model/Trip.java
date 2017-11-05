@@ -14,7 +14,8 @@ import java.util.Set;
  */
 public class Trip implements Serializable {
 
-    private Long id;
+    private Integer id;
+    private Driver driver;
     private Address addressFrom;
     private Address addressTo;
     private Set<Passenger> passengers;
@@ -22,12 +23,16 @@ public class Trip implements Serializable {
     protected Trip() {
     }
 
-    public Trip(Long id) {
+    public Trip(Integer id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public Driver getDriver() {
+        return driver;
     }
 
     public Address getAddressFrom() {

@@ -17,7 +17,7 @@ public interface DriverService {
     @RequestMapping(method = RequestMethod.POST, value = "/authenticate")
     public Response authenticateDriver(Driver driver);
 
-    @RequestMapping(method = RequestMethod.POST, value = "/trip")
+    @RequestMapping(method = RequestMethod.POST, value = "/trips")
     public Response acceptTrip(Trip trip);
 
 }
