@@ -7,6 +7,8 @@ import com.taxicalls.gateway.services.NotificationService;
 import com.taxicalls.gateway.services.TripService;
 import com.taxicalls.protocol.Response;
 import com.taxicalls.protocol.Status;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,8 @@ public class DriversResource {
     @Autowired
     private NotificationService notificationService;
 
+    private static final Logger LOGGER = Logger.getLogger(DriversResource.class.getName());
+
     @RequestMapping(method = RequestMethod.POST, value = "/authenticate")
     public Response authenticateDriver(@RequestBody Driver driver) {
         Response response = driverService.authenticateDriver(driver);
@@ -41,11 +45,11 @@ public class DriversResource {
         return driverService.acceptTrip(trip);
     }
 
-      @RequestMapping(method = RequestMethod.POST, value = "/trips/update")
+    @RequestMapping(method = RequestMethod.POST, value = "/trips/update")
     public Response updateTrip(@RequestBody Trip trip) {
         return tripService.updateTrip(trip);
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, value = "/update")
     public Response updateDriver(@RequestBody Driver driver) {
         return tripService.updateDriver(driver);
@@ -58,4 +62,11 @@ public class DriversResource {
         checkNotificationsRequest.setId(driver.getId());
         return notificationService.checkNotifications(checkNotificationsRequest);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/billings/account/update")
+    public Response updateAccount(@RequestBody Driver driver) {
+        LOGGER.log(Level.INFO, "updateAccount() invoked");
+        return Response.successful();
+    }
+
 }

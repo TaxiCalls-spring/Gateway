@@ -7,6 +7,8 @@ import com.taxicalls.gateway.services.PassengerService;
 import com.taxicalls.gateway.services.TripService;
 import com.taxicalls.protocol.Response;
 import com.taxicalls.protocol.Status;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,8 @@ public class PassengersResource {
     @Autowired
     private TripService tripService;
 
+    private static final Logger LOGGER = Logger.getLogger(PassengersResource.class.getName());
+
     @RequestMapping(method = RequestMethod.POST, value = "/authenticate")
     public Response authenticatePassenger(@RequestBody Passenger passenger) {
         Response response = passengerService.authenticatePassenger(passenger);
@@ -44,6 +48,11 @@ public class PassengersResource {
         return tripService.getAvailableDrivers(availableDriversRequest);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/trips/request")
+    public Response requestTrip(@RequestBody Trip trip) {
+        return tripService.requestTrip(trip);
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/trips/drivers/choose")
     public Response chooseDriver(@RequestBody ChooseDriverRequest chooseDriverRequest) {
         return passengerService.chooseDriver(chooseDriverRequest);
@@ -56,4 +65,11 @@ public class PassengersResource {
         checkNotificationsRequest.setId(passenger.getId());
         return notificationService.checkNotifications(checkNotificationsRequest);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/billings/card/update")
+    public Response updateCard(@RequestBody Passenger passenger) {
+        LOGGER.log(Level.INFO, "updateCard() invoked");
+        return Response.successful();
+    }
+
 }

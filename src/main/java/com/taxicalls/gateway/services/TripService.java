@@ -24,4 +24,7 @@ public interface TripService {
     @RequestMapping(method = RequestMethod.POST, value = "/trips/update")
     public Response updateTrip(Trip trip);
 
+    @RequestMapping(method = RequestMethod.POST, value = "/trips/request")
+    public Response requestTrip(Trip trip);
+
 }
